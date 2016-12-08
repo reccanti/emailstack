@@ -1,0 +1,16 @@
+{
+  "name": "emailstack",
+  "version": "1.0.0",
+  "description": "tool for making and previewing emails",
+  "main": "index.js",
+  "scripts": {
+    "start": "browser-sync start --server --files '*.html'",
+    "build": "juice"
+  },
+  "author": "Ben Wilcox <reccanti@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "browser-sync": "^2.18.2",
+    "juice": "^4.0.2"
+  }
+}
