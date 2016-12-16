@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var compiler = require('./compiler');
+var compiler = require('../compiler');
 
 /*
  * Gather command line arguments and generate
