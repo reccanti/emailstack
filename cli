@@ -22,6 +22,11 @@ var args = require('yargs')
  * call the appropriate functions based on the arguments
  */
 if (args._[0] === 'compile') {
-    compiler.compile(args.inFile, args.outDir);
+    if (args.watch) {
+        compiler.watch(args.inFile, args.outDir);
+    } else {
+        compiler.compile(args.inFile, args.outDir);
+    }
 }
+
 // console.log(args);
