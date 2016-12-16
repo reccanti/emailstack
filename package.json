@@ -2,7 +2,10 @@
   "name": "emailstack",
   "version": "1.0.0",
   "description": "tool for making and previewing emails",
-  "main": "cli",
+  "main": "bin/cli",
+  "bin": {
+    "emailstack": "bin/emailstack"
+  },
   "scripts": {
     "start": "browser-sync start --server --files '*.html'",
     "build": "juice"
