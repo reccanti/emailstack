@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+var compiler = require('./compiler');
+
 /*
  * Gather command line arguments and generate
  * command line instructions
@@ -19,4 +21,7 @@ var args = require('yargs')
 /*
  * call the appropriate functions based on the arguments
  */
-console.log(args);
+if (args._[0] === 'compile') {
+    compiler.compile(args.inFile, args.outDir);
+}
+// console.log(args);
