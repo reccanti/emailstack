@@ -2,7 +2,7 @@
   "name": "emailstack",
   "version": "1.0.0",
   "description": "tool for making and previewing emails",
-  "main": "index.js",
+  "main": "cli",
   "scripts": {
     "start": "browser-sync start --server --files '*.html'",
     "build": "juice"
@@ -12,6 +12,7 @@
   "dependencies": {
     "browser-sync": "^2.18.2",
     "buildmail": "^4.0.0",
-    "juice": "^4.0.2"
+    "juice": "^4.0.2",
+    "yargs": "^6.5.0"
   }
 }
