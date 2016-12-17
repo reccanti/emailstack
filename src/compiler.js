@@ -8,6 +8,13 @@ var juice = require('juice');
  * compile HTML and move it to the specified directory
  */
 function compile(input, outputDir, cb) {
+    // check to see if an output directory was passed
+    if (!(outputDir instanceof String) && typeof outputDir !== 'string') {
+        if (typeof outputDir === 'function') {
+            cb = outputDir;
+        }
+        outputDir = '.';
+    }
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir, 'compiled.html');
     fs.readFile(input, 'utf8', function(err, contents) {
@@ -25,6 +32,10 @@ function compile(input, outputDir, cb) {
  * generated file
  */
 function watch(input, outputDir) {
+    // check to see if an output directory was passed
+    if (!(outputDir instanceof String) && typeof outputDir !== 'string') {
+        outputDir = '.';
+    }
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir);
     bs.watch(absInput, function (event, file) {
