@@ -5,6 +5,7 @@ var bs = require('browser-sync').create();
 var juice = require('juice');
 
 var htmlCompiler = require('./compilers/html');
+var emlCompiler = require('./compilers/eml');
 
 /**
  * compile HTML and move it to the specified directory
@@ -18,10 +19,11 @@ function compile(input, outputDir, cb) {
         outputDir = '.';
     }
     var absInput = path.resolve(input);
-    var absOutput = path.resolve(outputDir, 'compiled.html');
+    var absOutput = path.resolve(outputDir, 'compiled');
     fs.readFile(input, 'utf8', function(err, contents) {
         var inline = juice(contents);
         htmlCompiler(inline, absOutput, cb);
+        emlCompiler(inline, absOutput);
     });
 }
 
