@@ -10,10 +10,20 @@ var args = require('yargs')
         'compile <inFile> [outDir]',
         'Compile an HTML file into a specified format, inline HTML by default.',
         function(yargs) {
-            return yargs.option('watch', {
-                alias: 'w',
-                describe: 'watch the specified file and compile whenever there is a change',
-                type: 'boolean'
+            return yargs.options({
+                'c': {
+                    alias: 'compileTargets',
+                    array: true,
+                    choices: ['html', 'eml'],
+                    default: ['html'],
+                    describe: 'The types of files to output',
+                    type: 'string'
+                },
+                'w': {
+                    alias: 'watch',
+                    describe: 'Watch the specified file and compile whenever there is a change',
+                    type: 'boolean'
+                }
             });
         }
     )
@@ -27,10 +37,16 @@ var args = require('yargs')
  * call the appropriate functions based on the arguments
  */
 if (args._[0] === 'compile') {
+    options = {
+        compileTargets: {}
+    };
+    for (var i = 0; i < args.compileTargets.length; i++) {
+        options.compileTargets[args.compileTargets[i]] = true;
+    }
     if (args.watch) {
-        compiler.watch(args.inFile, args.outDir);
+        compiler.watch(args.inFile, args.outDir || '.', options);
     } else {
-        compiler.compile(args.inFile, args.outDir);
+        compiler.compile(args.inFile, args.outDir || '.', options);
     }
 }
 // console.log(args);

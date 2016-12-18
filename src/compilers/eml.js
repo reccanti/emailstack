@@ -8,6 +8,7 @@ var BuildMail = require('buildmail');
 function compileEml(content, outputfile) {
     var mail = new BuildMail('text/html').setContent(content);
     mail.createReadStream().pipe(fs.createWriteStream(outputfile + '.eml'));
+    console.log('Successfully compiled eml!');
 }
 
 module.exports = compileEml;

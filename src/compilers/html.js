@@ -7,7 +7,7 @@ var fs = require('fs');
 function compileHTML(content, outputfile, cb) {
     fs.writeFile(outputfile + '.html', content, function(err, doc) {
         if (err) throw err;
-        console.log('Successfully compiled HTML');
+        console.log('Successfully compiled HTML!');
         if (cb) cb();
     });
 }
