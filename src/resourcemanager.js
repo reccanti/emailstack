@@ -1,35 +1,12 @@
 var fs = require('fs');
 var path = require('path');
-var htmlparser = require('htmlparser2');
-
-var inputdir = '' 
-    ,outputdir = ''
-    ,assetdir = '';
-
-// get the current file directory
-// find the location of the file relative to that directory
-
-/**
- * Initialize the html parser
- */
-var parser = new htmlparser.Parser({
-    onopentag: function(name, attrs) {
-        if (name === 'img' && attrs.src) {
-            var inputfile = path.join(inputdir, attrs.src);
-            var outputfile = transferFile(inputfile, assetdir);
-            // console.log(htmlparser.DomUtils.replaceElement);
-            attrs.src = outputfile;
-        }
-    }
-}, {decodeEntities: true});
+var cheerio = require('cheerio');
 
 /**
  * Transfer a file into the output asset directory
  */
 function transferFile(inputfilename, assetdir) {
     var outputfilename = path.join(assetdir, path.basename(inputfilename));
-    // console.log(inputfilename);
-    // console.log(outputfilename);
     fs.createReadStream(inputfilename).pipe(fs.createWriteStream(outputfilename));
     return outputfilename;
 }
@@ -45,23 +22,24 @@ function makeAssetDirectory(outputdir) {
     return assetdir;
 }
 
-/*
-how this should work
-
-1) get html
-2) find asset url
-3) create an asset folder (if it doesn't already exist)
-4) copy elements into that folder
-5) change the asset url in the html into the new location
-
-*/
-
+/**
+ * fetch assets and move them to an assets folder
+ * change image urls to refer to this directory
+ */
 function fetchAssets(html, input, output) {
-    inputdir = input;
-    outputdir = output;
-    assetdir = makeAssetDirectory(outputdir);
-    parser.write(html);
-    parser.end();
+    var inputdir = input;
+    var outputdir = output;
+    var assetdir = makeAssetDirectory(outputdir);
+
+    var $ = cheerio.load(html);
+    $('img').each(function (index, elem) {
+        var inputfile = path.join(inputdir, $(elem).attr('src'));
+        var outputfile = transferFile(inputfile, assetdir);
+
+        var localfile = path.relative(outputdir, outputfile);
+        $(elem).attr('src', localfile);
+    });
+    return $;
 }
 
 module.exports.fetchAssets = fetchAssets;

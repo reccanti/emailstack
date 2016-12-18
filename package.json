@@ -15,8 +15,7 @@
   "dependencies": {
     "browser-sync": "^2.18.2",
     "buildmail": "^4.0.0",
-    "domutils": "^1.5.1",
-    "htmlparser2": "^3.9.2",
+    "cheerio": "^0.22.0",
     "juice": "^4.0.2",
     "yargs": "^6.5.0"
   }

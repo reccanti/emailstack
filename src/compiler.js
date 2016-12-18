@@ -36,8 +36,8 @@ function compile(input, outputDir, options, cb) {
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir, 'compiled');
     fs.readFile(input, 'utf8', function(err, contents) {
-        resourcemanager.fetchAssets(contents, path.dirname(absInput), path.dirname(absOutput));
-        var html = juice(contents);
+        var $ = resourcemanager.fetchAssets(contents, path.dirname(absInput), path.dirname(absOutput));
+        var html = juice($.html());
         generateCompilerChain(html, absOutput, options.compileTargets)
             .then(cb);
     });
