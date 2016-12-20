@@ -37,27 +37,66 @@ function compile(input, outputDir, options, cb) {
     });
 }
 
+function compilePromise(input, outputDir, options) {
+    var absInput = path.resolve(input);
+    var absOutput = path.resolve(outputDir, 'compiled');
+    return new Promise(function (resolve, error) {
+        fs.readFile(input, 'utf8', function(err, contents) {
+            console.log('hello');
+            if (err) {
+                error(err);
+                return;
+            }
+            var $ = resourcemanager.fetchAssets(contents, path.dirname(absInput), path.dirname(absOutput));
+            var html = juice($.html());
+            resolve(html);
+        });
+    })
+    .then(function (html) {
+        generateCompilerChain(html, absOutput, options.compileTargets);
+    });
+}
+
 /**
  * watch for changes to the specified file and serve the 
  * generated file
  */
 function watch(input, outputDir, options) {
     // compile the HTML so that there's something to watch
-    compile(input, outputDir, options);
+    // compile(input, outputDir, options);
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir);
-    bs.watch(absInput, function (event, file) {
-        if (event === 'change') {
-            compile(input, outputDir, options, function() {
-                bs.reload();
-            });
-        }
-    });
-    bs.init({
-        server: {
-            baseDir: absOutput,
-            index: 'compiled.html'
-        }
+
+    // bs.watch(absInput, function (event, file) {
+    //     if (event === 'change') {
+    //         compile(input, outputDir, options, function() {
+    //             bs.reload();
+    //         });
+    //     }
+    // });
+    // bs.init({
+    //     server: {
+    //         baseDir: absOutput,
+    //         index: 'compiled.html'
+    //     }
+    // });
+
+
+    var watch = compilePromise(input, outputDir, options).then(function () {
+        console.log('watch');
+        bs.watch(absInput, function (event, file) {
+            if (event === 'change') {
+                compile(input, outputDir, options, function() {
+                    bs.reload();
+                });
+            }
+        });
+        bs.init({
+            server: {
+                baseDir: absOutput,
+                index: 'compiled.html'
+            }
+        });
     });
 }
 

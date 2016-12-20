@@ -8,7 +8,7 @@ var BuildMail = require('buildmail');
  * eml file
  */
 function compileEml(content, outputfile) {
-    return new Promise(function (error, resolve) {
+    return new Promise(function (resolve, error) {
         fs.readdir(path.join(path.dirname(outputfile), 'assets'), function (err, files) {
             if (err) {
                 error(err);

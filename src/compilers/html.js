@@ -5,7 +5,7 @@ var fs = require('fs');
  * compile it into HTML
  */
 function compileHTML(content, outputfile, cb) {
-    return new Promise(function (error, resolve) {
+    return new Promise(function (resolve, error) {
         fs.writeFile(outputfile + '.html', content, function(err, doc) {
             if (err) {
                 error(err);
