@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var cheerio = require('cheerio');
+var isValidUrl = require('valid-url');
 
 /**
  * Transfer a file into the output asset directory
@@ -33,11 +34,13 @@ function fetchAssets(html, input, output) {
 
     var $ = cheerio.load(html);
     $('img').each(function (index, elem) {
-        var inputfile = path.join(inputdir, $(elem).attr('src'));
-        var outputfile = transferFile(inputfile, assetdir);
+        if ($(elem).attr('src') && !(isValidUrl.isWebUri($(elem).attr('src')))) {
+            var inputfile = path.join(inputdir, $(elem).attr('src'));
+            var outputfile = transferFile(inputfile, assetdir);
 
-        var localfile = path.relative(outputdir, outputfile);
-        $(elem).attr('src', localfile);
+            var localfile = path.relative(outputdir, outputfile);
+            $(elem).attr('src', localfile);
+        }
     });
     return $;
 }

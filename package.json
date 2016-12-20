@@ -17,6 +17,7 @@
     "buildmail": "^4.0.0",
     "cheerio": "^0.22.0",
     "juice": "^4.0.2",
+    "valid-url": "^1.0.9",
     "yargs": "^6.5.0"
   }
 }
