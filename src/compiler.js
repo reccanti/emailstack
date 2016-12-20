@@ -13,20 +13,14 @@ var resourcemanager = require('./resourcemanager');
  * compilers
  */
 function generateCompilerChain(inline, output, compileTargets) {
-    var compilerchain = Promise.resolve();
+    var compilers = [];
     if (compileTargets.html) {
-        compilerchain.then(function(resolve, reject) {
-            htmlCompiler(inline, output);
-            resolve();
-        });
+        compilers.push(htmlCompiler(inline, output));
     }
     if (compileTargets.eml) {
-        compilerchain.then(function (resolve, reject) {
-            emlCompiler(inline, output);
-            resolve();
-        });
+        compilers.push(emlCompiler(inline, output));
     }
-    return compilerchain;
+    return Promise.all(compilers);
 }
 
 /**
