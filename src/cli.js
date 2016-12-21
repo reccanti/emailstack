@@ -1,4 +1,5 @@
 var compiler = require('./compiler');
+var sender = require('./sender');
 
 /*
  * Gather command line arguments and generate
@@ -27,6 +28,10 @@ var args = require('yargs')
             });
         }
     )
+    .command(
+        'send <file> [recipients...]',
+        'Send an HTML email file to the specified recipents'
+    )
     .example('$0 compile email.html')
     .example('$0 compile email.html --watch')
     .help('h')
@@ -48,5 +53,7 @@ if (args._[0] === 'compile') {
     } else {
         compiler.compile(args.inFile, args.outDir || '.', options);
     }
+} else if (args._[0] === 'send') {
+    sender.send(args.file, args.recipients);
 }
 // console.log(args);

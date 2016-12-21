@@ -32,13 +32,7 @@ function compileEmlNodemail(content, outputfile) {
     var mailData = {
         from: '"Ben Wilcox" <reccanti@gmail.com>',
         to: ['reccanti@gmail.com'],
-        attachments: [
-            {
-                filename: 'hello.jpg',
-                path: path.resolve('./demo/assets/joker.jpg'),
-                cid: '<joker.jpg@test.com>'
-            }
-        ]
+        attachments: []
     };
     var $ = cheerio.load(content);
     $('img').each(function (index, elem) {

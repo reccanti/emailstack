@@ -16,6 +16,7 @@
     "browser-sync": "^2.18.2",
     "buildmail": "^4.0.0",
     "cheerio": "^0.22.0",
+    "inquirer": "^2.0.0",
     "juice": "^4.0.2",
     "nodemailer": "^2.7.0",
     "nodemailer-stub-transport": "^1.1.0",
