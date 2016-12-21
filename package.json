@@ -1,6 +1,6 @@
 {
   "name": "emailstack",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "tool for making and previewing emails",
   "main": "bin/cli",
   "bin": {
@@ -17,6 +17,8 @@
     "buildmail": "^4.0.0",
     "cheerio": "^0.22.0",
     "juice": "^4.0.2",
+    "nodemailer": "^2.7.0",
+    "nodemailer-stub-transport": "^1.1.0",
     "valid-url": "^1.0.9",
     "yargs": "^6.5.0"
   }

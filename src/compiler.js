@@ -37,12 +37,14 @@ function compile(input, outputDir, options, cb) {
     });
 }
 
+/**
+ * A promise version of the compile function - TODO merge together
+ */
 function compilePromise(input, outputDir, options) {
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir, 'compiled');
     return new Promise(function (resolve, error) {
         fs.readFile(input, 'utf8', function(err, contents) {
-            console.log('hello');
             if (err) {
                 error(err);
                 return;
@@ -63,27 +65,9 @@ function compilePromise(input, outputDir, options) {
  */
 function watch(input, outputDir, options) {
     // compile the HTML so that there's something to watch
-    // compile(input, outputDir, options);
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir);
-
-    // bs.watch(absInput, function (event, file) {
-    //     if (event === 'change') {
-    //         compile(input, outputDir, options, function() {
-    //             bs.reload();
-    //         });
-    //     }
-    // });
-    // bs.init({
-    //     server: {
-    //         baseDir: absOutput,
-    //         index: 'compiled.html'
-    //     }
-    // });
-
-
     var watch = compilePromise(input, outputDir, options).then(function () {
-        console.log('watch');
         bs.watch(absInput, function (event, file) {
             if (event === 'change') {
                 compile(input, outputDir, options, function() {
