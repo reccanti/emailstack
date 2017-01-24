@@ -11,7 +11,7 @@ var stubTransport = require('nodemailer-stub-transport');
  * Given a stream of content, compile it into an
  * eml file
  */
-function compileEml(content, outputfile) {
+function compileEml(content, inputfile, outputfile) {
     return new Promise(function (resolve, error) {
         fs.readdir(path.join(path.dirname(outputfile), 'assets'), function (err, files) {
             if (err) {
@@ -27,7 +27,7 @@ function compileEml(content, outputfile) {
     });
 }
 
-function compileEmlNodemail(content, outputfile) {
+function compileEmlNodemail(content, inputfile, outputfile) {
     var transport = nodemailer.createTransport(stubTransport());
     var mailData = {
         from: '"Ben Wilcox" <reccanti@gmail.com>',
@@ -39,7 +39,7 @@ function compileEmlNodemail(content, outputfile) {
         var $filepath = $(elem).attr('src');
         if ($filepath && !(isValidUrl.isWebUri($filepath))) {
             var filename = path.basename($filepath);
-            var filepath = path.resolve(path.join(path.dirname(outputfile), filename));
+            var filepath = path.resolve(path.dirname(outputfile), path.resolve(path.dirname(inputfile), filename));
             var cid = path.basename($filepath) + '@test.com';
             mailData.attachments.push({
                 filename: filename,
@@ -53,6 +53,7 @@ function compileEmlNodemail(content, outputfile) {
     return transport.sendMail(mailData)
         .then(function(info) {
             return new Promise(function (resolve, reject) {
+                console.log('la');
                 fs.writeFile(outputfile + '.eml', info.response.toString(), function(err, doc) {
                     if (err) {
                         reject(err)
@@ -60,7 +61,7 @@ function compileEmlNodemail(content, outputfile) {
                         console.log('Successfully compiled eml!');
                         resolve();
                     }
-                })
+                });
             });
         });
 }

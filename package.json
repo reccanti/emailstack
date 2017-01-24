@@ -6,6 +6,10 @@
   "bin": {
     "emailstack": "bin/emailstack"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/reccanti/emailstack"
+  },
   "scripts": {
     "start": "browser-sync start --server --files '*.html'",
     "build": "juice"

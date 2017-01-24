@@ -12,13 +12,13 @@ var resourcemanager = require('./resourcemanager');
  * Generate a Promise chain to call the different
  * compilers
  */
-function generateCompilerChain(inline, output, compileTargets) {
+function generateCompilerChain(inline, input, output, compileTargets) {
     var compilers = [];
     if (compileTargets.html) {
-        compilers.push(htmlCompiler(inline, output));
+        compilers.push(htmlCompiler(inline, input, output));
     }
     if (compileTargets.eml) {
-        compilers.push(emlCompiler(inline, output));
+        compilers.push(emlCompiler(inline, input, output));
     }
     return Promise.all(compilers);
 }
@@ -29,10 +29,13 @@ function generateCompilerChain(inline, output, compileTargets) {
 function compile(input, outputDir, options, cb) {
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir, 'compiled');
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir);
+    }
     fs.readFile(input, 'utf8', function(err, contents) {
         var $ = resourcemanager.fetchAssets(contents, path.dirname(absInput), path.dirname(absOutput));
         var html = juice($.html());
-        generateCompilerChain(html, absOutput, options.compileTargets)
+        generateCompilerChain(html, absInput, absOutput, options.compileTargets)
             .then(cb);
     });
 }
@@ -43,6 +46,9 @@ function compile(input, outputDir, options, cb) {
 function compilePromise(input, outputDir, options) {
     var absInput = path.resolve(input);
     var absOutput = path.resolve(outputDir, 'compiled');
+    if (!fs.existsSync(outputDir)) {
+        fs.mkdirSync(outputDir);
+    }
     return new Promise(function (resolve, error) {
         fs.readFile(input, 'utf8', function(err, contents) {
             if (err) {
@@ -55,7 +61,7 @@ function compilePromise(input, outputDir, options) {
         });
     })
     .then(function (html) {
-        generateCompilerChain(html, absOutput, options.compileTargets);
+        generateCompilerChain(html, absInput, absOutput, options.compileTargets);
     });
 }
 
