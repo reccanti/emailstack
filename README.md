@@ -1,6 +1,6 @@
 # emailstack
 
-A stack that helps to create and test HTML emails
+A tech stack that helps to create and test HTML emails
 
 ## Installation
 
@@ -12,7 +12,7 @@ npm install -g reccanti/emailstack
 
 ## How it Works
 
-### Compile HTML
+### Compiling to HTML
 
 you can inline styles into an HTML document by doing
 
@@ -26,14 +26,18 @@ this will produce a file in your current directory called `compiled.html`. To sp
 emailstack compile email.html dist
 ```
 
+### Watching a file while compiling
+
 To watch the file and compile on any change, you can specify a watch option
 
 ```
 emailstack compile email.html dist -w
 ```
 
-### Send an email - TODO
+### Specifying compile targets
+
+Emailstack has 2 compile targets, _HTML_ and _eml_. You can specify them like so:
 
 ```
-emailstack send dist/email.html you@example.com
+emailstack compile email.html -c html eml
 ```
