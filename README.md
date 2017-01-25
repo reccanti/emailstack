@@ -4,10 +4,10 @@ A tech stack that helps to create and test HTML emails
 
 ## Installation
 
-emailstack is not currently available on NPM, but you can try it out now using
+You can install emailstack from NPM by running the following command from your terminal:
 
 ```
-npm install -g reccanti/emailstack
+npm install -g emailstack
 ```
 
 ## How it Works
